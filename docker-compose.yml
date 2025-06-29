@@ -28,7 +28,7 @@ services:
       container_name: laravel_nginx
       restart: unless-stopped
       ports:
-        - "8000:80"
+        - "8010:80"
       volumes:
         # Você pode manter este volume, pois é o volume da aplicação em si, não da configuração Nginx
         - .:/var/www/html
