@@ -20,13 +20,19 @@ services:
     # --- END OF MODIFICATION ---
 
   nginx:
-    image: nginx:stable-alpine
-    container_name: laravel_nginx
-    restart: unless-stopped
-    ports:
-      - "8010:80"
-    volumes:
-      - .:/var/www/html
-      - ./docker/nginx.conf:/etc/nginx/conf.d/app.conf
-    depends_on:
-      - app
+      # --- MUDANÇA MAIS IMPORTANTE AQUI ---
+      build: # Diga ao Docker Compose para CONSTRUIR a imagem Nginx
+        context: ./docker # O contexto para o build é a pasta 'docker'
+        dockerfile: nginx.Dockerfile # Use o Dockerfile recém-criado para o Nginx
+      # --- FIM DA MUDANÇA MAIS IMPORTANTE ---
+      container_name: laravel_nginx
+      restart: unless-stopped
+      ports:
+        - "8000:80"
+      volumes:
+        # Você pode manter este volume, pois é o volume da aplicação em si, não da configuração Nginx
+        - .:/var/www/html
+        # REMOVA OU COMENTE A LINHA ABAIXO, ELA CAUSA O PROBLEMA:
+        # - ./docker/nginx.conf:/etc/nginx/conf.d/app.conf
+      depends_on:
+        - app
